@@ -31,7 +31,7 @@ export default function EmployeesPage() {
     <div>
       <h1>Employees</h1>
       <ul>
-        {employees.map((employee) => (
+        {employees?.map((employee) => (
           <li key={employee.id}>
             {employee.first_name} {employee.last_name}
           </li>
