@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { NextResponse } from 'next/server';
 import client from '../../db';
@@ -56,16 +57,37 @@ export async function GET(request: Request) {
   
 }
 // POST method remains unchanged
-export async function POST(req: Request) {
-  const { first_name, last_name, hire_date, salary }: Omit<Employee, 'id'> = await req.json();
+// export async function POST(req: Request) {
+//   const { first_name, last_name, hire_date, salary }: Omit<Employee, 'id'> = await req.json();
 
+//   try {
+//     const res = await client.query(
+//       'INSERT INTO employees (first_name, last_name, hire_date, salary) VALUES ($1, $2, $3, $4) RETURNING *',
+//       [first_name, last_name, hire_date, salary]
+//     );
+//     return NextResponse.json(res.rows[0], { status: 201 });
+//   } catch (err) {
+//     return NextResponse.json({ error: 'Failed to add employee' }, { status: 500 });
+//   }
+// }
+
+export async function POST(req: Request) {
   try {
+    const { first_name, last_name, hire_date, salary }: Omit<Employee, 'id'> = await req.json();
+
+    // Validate input
+    if (!first_name || !last_name || !hire_date || !salary) {
+      return NextResponse.json({ error: 'All fields are required' }, { status: 400 });
+    }
+
     const res = await client.query(
       'INSERT INTO employees (first_name, last_name, hire_date, salary) VALUES ($1, $2, $3, $4) RETURNING *',
       [first_name, last_name, hire_date, salary]
     );
+
     return NextResponse.json(res.rows[0], { status: 201 });
-  } catch (err) {
+  } catch (err: any) {
+    console.error('Error adding employee:', err);
     return NextResponse.json({ error: 'Failed to add employee' }, { status: 500 });
   }
 }
