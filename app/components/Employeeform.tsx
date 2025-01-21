@@ -67,7 +67,7 @@ export default function EmployeeForm({ onAddEmployee }: EmployeeFormProps) {
         onChange={handleChange}
         required
       />
-      <button type="submit">Add Employees List</button>
+      <button type="submit">Add Employees List Data</button>
     </form>
   );
 }

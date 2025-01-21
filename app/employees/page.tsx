@@ -37,7 +37,7 @@ export default function EmployeesPage() {
           </li>
         ))}
       </ul>
-      <h2>Add Employee</h2>
+      <h2>Add Employee DATA</h2>
       <EmployeeForm onAddEmployee={handleAddEmployee} />
     </div>
   );
