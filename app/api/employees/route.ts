@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { NextResponse } from 'next/server';
-import client from '../../db';
+import pool from '../../db';
 
 type Employee = {
   id: number;
@@ -14,7 +14,7 @@ type Employee = {
 // Function to fetch employee by ID
 // export async function fetchEmployeeById(id: number): Promise<Employee | null> {
 //   try {
-//     const res = await client.query('SELECT * FROM employees WHERE id = $1', [id]);
+//     const res = await pool.query('SELECT * FROM employees WHERE id = $1', [id]);
 //     if (res.rows.length === 0) {
 //       return null;  // Return null if no employee found
 //     }
@@ -34,7 +34,7 @@ type Employee = {
 //   } else {
 //     // Fetch all employees
 //     try {
-//       const res = await client.query('SELECT * FROM employees');
+//       const res = await pool.query('SELECT * FROM employees');
 //       return NextResponse.json(res.rows); 
 //     } catch (err) {
 //       console.error('Database query failed:', err);
@@ -48,7 +48,7 @@ export async function GET(request: Request) {
 
     // Fetch all employees
     try {
-      const res = await client.query('SELECT * FROM employees');
+      const res = await pool.query('SELECT * FROM employees');
       return NextResponse.json(res.rows); 
     } catch (err) {
       console.error('Database query failed:', err);
@@ -61,7 +61,7 @@ export async function GET(request: Request) {
 //   const { first_name, last_name, hire_date, salary }: Omit<Employee, 'id'> = await req.json();
 
 //   try {
-//     const res = await client.query(
+//     const res = await pool.query(
 //       'INSERT INTO employees (first_name, last_name, hire_date, salary) VALUES ($1, $2, $3, $4) RETURNING *',
 //       [first_name, last_name, hire_date, salary]
 //     );
@@ -80,7 +80,7 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: 'All fields are required' }, { status: 400 });
     }
 
-    const res = await client.query(
+    const res = await pool.query(
       'INSERT INTO employees (first_name, last_name, hire_date, salary) VALUES ($1, $2, $3, $4) RETURNING *',
       [first_name, last_name, hire_date, salary]
     );
